@@ -414,7 +414,7 @@ workflow PRESTO_UMI {
             PRESTO_PAIRSEQ_UMI.out.reads
         )
         ch_versions = ch_versions.mix(PRESTO_ESTIMATEERROR_SET.out.versions)
-        
+
     }
 
     if (params.cluster_sets) {
@@ -609,5 +609,5 @@ workflow PRESTO_UMI {
     presto_collapseseq_logs = ch_collapse_logs.collect()
     presto_splitseq_logs = PRESTO_SPLITSEQ_UMI.out.logs.collect()
     
-    // presto_estimateerror_logs = PRESTO_ESTIMATEERROR_SET.out.logs.collect()
+    presto_estimateerror_logs = PRESTO_ESTIMATEERROR_SET.out.logs.collect()
 }
