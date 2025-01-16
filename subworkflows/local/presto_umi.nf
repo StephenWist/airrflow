@@ -38,8 +38,7 @@ include { PRESTO_COLLAPSESEQ    as PRESTO_COLLAPSESEQ_UMI             }    from 
 include { PRESTO_COLLAPSESEQ    as PRESTO_COLLAPSESEQ_ALIGN           }    from '../../modules/local/presto/presto_collapseseq'
 include { PRESTO_COLLAPSESEQ    as PRESTO_COLLAPSESEQ_CREGION         }    from '../../modules/local/presto/presto_collapseseq'
 include { PRESTO_SPLITSEQ       as PRESTO_SPLITSEQ_UMI                }    from '../../modules/local/presto/presto_splitseq'
-
-include { PRESTO_ESTIMATEERROR as PRESTO_ESTIMATEERROR_SET            }    from '../../modules/local/presto/presto_estimateerror'
+include { PRESTO_ESTIMATEERROR  as PRESTO_ESTIMATEERROR_SET           }    from '../../modules/local/presto/presto_estimateerror'
 
 workflow PRESTO_UMI {
     take:
@@ -608,6 +607,5 @@ workflow PRESTO_UMI {
     presto_assemblepairs_logs = ch_assemblepairs_logs.collect()
     presto_collapseseq_logs = ch_collapse_logs.collect()
     presto_splitseq_logs = PRESTO_SPLITSEQ_UMI.out.logs.collect()
-    
     presto_estimateerror_logs = PRESTO_ESTIMATEERROR_SET.out.logs.collect()
 }
