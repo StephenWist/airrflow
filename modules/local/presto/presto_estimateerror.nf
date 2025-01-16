@@ -12,7 +12,6 @@ process PRESTO_ESTIMATEERROR {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*_distance-set.tab"), path("*_error_nucleotide.tab"), path("*_error-position.tab"), path("*_error-quality.tab"), path("*_error-set.tab"), path("*_threshold-set.tab")
     path("*_command_log.txt") , emit: logs
     path("versions.yml"), emit: versions
 
