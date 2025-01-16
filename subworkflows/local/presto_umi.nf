@@ -247,6 +247,12 @@ workflow PRESTO_UMI {
         ch_for_clustersets = PRESTO_PAIRSEQ_UMI.out.reads
         ch_pairseq_logs = PRESTO_PAIRSEQ_UMI.out.logs
 
+        // Estimate error statistics within annotation sets.
+        PRESTO_ESTIMATEERROR_SET (
+            PRESTO_PAIRSEQ_UMI.out.reads
+        )
+        ch_versions = ch_versions.mix(PRESTO_ESTIMATEERROR_SET.out.versions)
+
     } else if (params.maskprimers_extract){
 
         if (params.cprimer_position == "R1"){
@@ -403,6 +409,12 @@ workflow PRESTO_UMI {
         ch_for_clustersets = PRESTO_PAIRSEQ_UMI.out.reads
         ch_pairseq_logs = PRESTO_PAIRSEQ_UMI.out.logs
 
+        // Estimate error statistics within annotation sets.
+        PRESTO_ESTIMATEERROR_SET (
+            PRESTO_PAIRSEQ_UMI.out.reads
+        )
+        ch_versions = ch_versions.mix(PRESTO_ESTIMATEERROR_SET.out.versions)
+        
     }
 
     if (params.cluster_sets) {
@@ -581,12 +593,6 @@ workflow PRESTO_UMI {
     )
     ch_versions = ch_versions.mix(PRESTO_SPLITSEQ_UMI.out.versions)
 
-    // Estimate error statistics within annotation sets. Maybe do this before split seq?
-    PRESTO_ESTIMATEERROR_SET (
-        PRESTO_SPLITSEQ_UMI.out.reads
-    )
-    ch_versions = ch_versions.mix(PRESTO_ESTIMATEERROR_SET.out.versions)
-
     emit:
     fasta = PRESTO_SPLITSEQ_UMI.out.fasta
     versions = ch_versions
@@ -603,5 +609,5 @@ workflow PRESTO_UMI {
     presto_collapseseq_logs = ch_collapse_logs.collect()
     presto_splitseq_logs = PRESTO_SPLITSEQ_UMI.out.logs.collect()
     
-    presto_estimateerror_logs = PRESTO_ESTIMATEERROR_SET.out.logs.collect()
+    // presto_estimateerror_logs = PRESTO_ESTIMATEERROR_SET.out.logs.collect()
 }
