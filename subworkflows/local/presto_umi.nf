@@ -248,7 +248,7 @@ workflow PRESTO_UMI {
 
         // Estimate error statistics within annotation sets.
         PRESTO_ESTIMATEERROR_SET (
-            PRESTO_PAIRSEQ_UMI.out.reads
+            ch_for_clustersets
         )
         ch_versions = ch_versions.mix(PRESTO_ESTIMATEERROR_SET.out.versions)
 
