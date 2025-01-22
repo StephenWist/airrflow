@@ -12,15 +12,17 @@ process PRESTO_ESTIMATEERROR {
     tuple val(meta), path(R1), path(R2)
 
     output:
+    tuple val(meta), path("*.tab")
     path("*_command_log.txt") , emit: logs
-
     path("versions.yml"), emit: versions
 
 
 
     script:
     """
-    EstimateError.py set -s $R1 $R2 --outname ${meta.id} --log ${meta.id}.log > ${meta.id}_command_log.txt
+    EstimateError.py set -s $R1 --outname ${meta.id}_R1 --log ${meta.id}_R1.log > ${meta.id}_command_log.txt
+    # R2 will fail if it has no UMI, I think
+    EstimateError.py set -s $R2 --outname ${meta.id}_R2 --log ${meta.id}_R2.log >> ${meta.id}_command_log.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
