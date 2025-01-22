@@ -9,17 +9,18 @@ process PRESTO_ESTIMATEERROR {
         'biocontainers/presto:0.7.1--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(R1), path(R2)
 
     output:
     path("*_command_log.txt") , emit: logs
+
     path("versions.yml"), emit: versions
 
 
 
     script:
     """
-    EstimateError.py set -s $reads --outname ${meta.id} --log ${meta.id}.log > ${meta.id}_command_log.txt
+    EstimateError.py set -s $R1 $R2 --outname ${meta.id} --log ${meta.id}.log > ${meta.id}_command_log.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
