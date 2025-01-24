@@ -10,20 +10,21 @@ process PRESTO_ESTIMATEERROR {
 
     input:
     tuple val(meta), path(R1), path(R2)
+    val(barcode_position)
 
     output:
     tuple val(meta), path("*.tab")
     path("*_command_log.txt") , emit: logs
     path("versions.yml"), emit: versions
 
-
-
     script:
     """
-    EstimateError.py set -s $R1 --outname ${meta.id}_R1 --log ${meta.id}_R1.log > ${meta.id}_command_log.txt
-    # R2 will fail if it has no UMI, I think
-    EstimateError.py set -s $R2 --outname ${meta.id}_R2 --log ${meta.id}_R2.log >> ${meta.id}_command_log.txt
-
+    if [ $barcode_position == "R2" ]; then 
+        EstimateError.py set -s $R2 --outname ${meta.id} --log ${meta.id}.log > ${meta.id}_command_log.txt
+    elif [ $barcode_position == "R1" ]; then
+        EstimateError.py set -s $R1 --outname ${meta.id} --log ${meta.id}.log > ${meta.id}_command_log.txt
+    fi
+    
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         presto: \$( EstimateError.py --version | awk -F' '  '{print \$2}' )

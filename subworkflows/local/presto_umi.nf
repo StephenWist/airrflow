@@ -246,9 +246,10 @@ workflow PRESTO_UMI {
         ch_for_clustersets = PRESTO_PAIRSEQ_UMI.out.reads
         ch_pairseq_logs = PRESTO_PAIRSEQ_UMI.out.logs
 
-        // Estimate error statistics within annotation sets.
+        // Pre-consensus pair estimation of sequencing and PCR error rates with UMI data.
         PRESTO_ESTIMATEERROR_SET (
-            ch_for_clustersets
+            ch_for_clustersets,
+            barcode_position
         )
         ch_versions = ch_versions.mix(PRESTO_ESTIMATEERROR_SET.out.versions)
 
@@ -408,9 +409,10 @@ workflow PRESTO_UMI {
         ch_for_clustersets = PRESTO_PAIRSEQ_UMI.out.reads
         ch_pairseq_logs = PRESTO_PAIRSEQ_UMI.out.logs
 
-        // Estimate error statistics within annotation sets.
+        // Pre-consensus pair estimation of sequencing and PCR error rates with UMI data.
         PRESTO_ESTIMATEERROR_SET (
-            ch_for_clustersets
+            ch_for_clustersets,
+            barcode_position
         )
         ch_versions = ch_versions.mix(PRESTO_ESTIMATEERROR_SET.out.versions)
 
